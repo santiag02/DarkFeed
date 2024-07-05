@@ -43,10 +43,6 @@ def update_df():
 
 
 if __name__ == "__main__":
-    data = []
-    with open('data', 'r') as file:
-        data = json.load(file)
-    all_data = data
 
     df = DarkFeed()
 
@@ -95,6 +91,11 @@ if __name__ == "__main__":
     if not args:
         exit()
     else:
+        data = []
+        with open('data', 'r') as file:
+            data = json.load(file)
+        all_data = data
+
         if args.init:
             save_key(args.init)
         if args.after:

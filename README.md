@@ -12,8 +12,8 @@ The idea is create functions to return data available in the interface and bring
 If you don't know how run it you can use the argument `-h`, like this:
 
 ```python
-python3 main.py -h
-usage: main.py [-h] [-i INIT] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES]
+darkfeed -h
+usage: darkfeed [-h] [-i INIT] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES]
                [-n] [-g]
 
 Ransomware statistics - Kudos DarkFeed (darkfeed.io).

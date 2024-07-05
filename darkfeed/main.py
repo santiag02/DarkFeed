@@ -11,6 +11,7 @@ from pprint import pprint
 
 #from lib.web_service import Web
 from .lib.dark import DarkFeed
+#from lib.dark import DarkFeed
 from pathlib import Path
 
 def save_key(key):
@@ -18,15 +19,16 @@ def save_key(key):
     config['API'] = {'key': key}
     with open('.ini', 'w') as configfile:
         config.write(configfile)
+    update_df()
 
 def update_df():
     config = configparser.ConfigParser()
-    config.read('.ini')
     try:
+        config.read('.ini')
         key = config['API']['key']
     except Exception as err:
-        print("Run init command first - API key was not found")
-        #print(err)
+        print("Run init command first - API key was not found or is not correct")
+        exit()
 
     conn = http.client.HTTPSConnection("darkfeed.io")
     headers = {
@@ -41,6 +43,29 @@ def update_df():
         print(f"Last date: {data[0].get('Date')}")
     else:
         print("It was not possible to connect to DarkFeed")
+        exit()
+
+def get_df() -> list:
+    config = configparser.ConfigParser()
+    try:
+        config.read('.ini')
+        key = config['API']['key']
+    except Exception as err:
+        print("Run init command first - API key was not found or is not correct")
+        exit()
+
+    conn = http.client.HTTPSConnection("darkfeed.io")
+    headers = {
+        "Authorization": "Basic " + key
+    }
+
+    response = requests.get("https://api.darkfeed.io/APIFULL", headers=headers)
+    if(response.status_code == 200):
+        data = response.json()
+        return data
+    else:
+        print("It was not possible to connect to DarkFeed")
+        exit()
 
 def main():
     df = DarkFeed()
@@ -86,23 +111,24 @@ def main():
             if input_str in all_flags:
                 last_argument = sys.argv[index]
                 break
+
+    current_folder = os.getcwd()
+    file_path = os.path.join(current_folder, "data")
+    data = []
+    if os.path.exists(file_path):
+        with open('data', 'r') as file:
+            data = json.load(file)
+    else:
+        data = get_df()
+    all_data = data
         
     if not args:
         exit()
     else:
-        current_folder = os.getcwd()
-        file_path = os.path.join(current_folder, "data")
-        if not os.path.exists(file_path):
-            print("Run init command first - API key was not found")
-            exit()
-            
-        data = []
-        with open('data', 'r') as file:
-            data = json.load(file)
-        all_data = data
-
         if args.init:
             save_key(args.init)
+        if args.update_base:
+            update_df()       
         if args.after:
             start = args.after + "T00:00:00"
             data = df.filter_after(start,data)
@@ -180,8 +206,7 @@ def main():
             print('In development . . .')
             exit()
             Web(all_data)
-        if args.update_base:
-            update_df()
+        
 
 if __name__ == "__main__":
     main()

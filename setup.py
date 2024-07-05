@@ -4,7 +4,7 @@ print(find_packages(include="lib", where="darkfeed"))
 
 setup(
     name="darkfeed",
-    version="0.1",
+    version="0.2",
     author="Camila Santiago",
     packages=["darkfeed", "darkfeed.lib"],
     description="A CLI for parser data from Dark Feed",

@@ -1,13 +1,18 @@
 from setuptools import setup, find_packages
 
-print(find_packages(include="lib", where="darkfeed"))
+def readme():
+    with open('README.md', 'r') as f:
+        README = f.read()
+    return README
 
 setup(
     name="darkfeed",
     version="0.2",
     author="Camila Santiago",
     packages=["darkfeed", "darkfeed.lib"],
-    description="A CLI for parser data from Dark Feed",
+    description="A CLI parser for data from Dark Feed",
+    long_description=readme(),
+    long_description_content_type="text/markdown",
     install_requires = ['python-dateutil','requests'],
     keywords= ['ransomware', 'victims', 'darkfeed', 'dark feed'],
     entry_points={

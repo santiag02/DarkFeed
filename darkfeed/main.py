@@ -9,22 +9,22 @@ import os
 
 from pprint import pprint
 
+KEY_PATH = os.path.join(os.path.expanduser("~"), '.darkfeed.ini')
+
 #from lib.web_service import Web
 from .lib.dark import DarkFeed
-#from lib.dark import DarkFeed
 from pathlib import Path
 
 def save_key(key):
     config = configparser.ConfigParser()
     config['API'] = {'key': key}
-    with open('.ini', 'w') as configfile:
+    with open(KEY_PATH, 'w') as configfile:
         config.write(configfile)
-    update_df()
 
 def update_df():
     config = configparser.ConfigParser()
     try:
-        config.read('.ini')
+        config.read(KEY_PATH)
         key = config['API']['key']
     except Exception as err:
         print("Run init command first - API key was not found or is not correct")
@@ -48,7 +48,7 @@ def update_df():
 def get_df() -> list:
     config = configparser.ConfigParser()
     try:
-        config.read('.ini')
+        config.read(KEY_PATH)
         key = config['API']['key']
     except Exception as err:
         print("Run init command first - API key was not found or is not correct")
@@ -111,22 +111,26 @@ def main():
             if input_str in all_flags:
                 last_argument = sys.argv[index]
                 break
-
-    current_folder = os.getcwd()
-    file_path = os.path.join(current_folder, "data")
-    data = []
-    if os.path.exists(file_path):
-        with open('data', 'r') as file:
-            data = json.load(file)
-    else:
-        data = get_df()
-    all_data = data
         
     if not args:
         exit()
     else:
         if args.init:
             save_key(args.init)
+            print(f"Key saved")
+
+
+        current_folder = os.getcwd()
+        file_path = os.path.join(current_folder, "data")
+        data = []
+        if os.path.exists(file_path):
+            with open('data', 'r') as file:
+                data = json.load(file)
+        else:
+            data = get_df()
+        all_data = data
+
+
         if args.update_base:
             update_df()       
         if args.after:

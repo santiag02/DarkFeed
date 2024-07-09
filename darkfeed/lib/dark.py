@@ -163,19 +163,19 @@ class DarkFeed:
         """
         Get a list of countries that have at least one victim of ransomware
         """
-        return self.count_countries(data).keys()
+        return list(self.count_countries(data).keys())
 
     def get_sector_list(self, data:list) -> list:
         """
         List all sectos identified by the victims of ransomware
         """
-        return self.count_sector(data).keys()
+        return list(self.count_sector(data).keys())
 
     def get_ransomware_list(self, data) -> list:
         """
         List all ransomwares in the base
         """
-        return self.count_group_name(data).keys()
+        return list(self.count_group_name(data).keys())
     
     def get_cyber_news(self, data) -> list:
         """

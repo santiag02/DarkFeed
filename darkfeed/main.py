@@ -67,13 +67,20 @@ def get_df() -> list:
         print("It was not possible to connect to DarkFeed")
         exit()
 
+def output(data, last_data:bool=False, json_f:bool=False):
+    if last_data:
+        if json_f:
+            print(json.dumps(data))
+        else:
+            print(data)
+
 def main():
     df = DarkFeed()
 
     # Start with date arguments
     parser = argparse.ArgumentParser(description='Ransomware statistics - Kudos DarkFeed (darkfeed.io).')
     
-    parser.add_argument('-i', '--init', type=str, dest='init', help='First step. Pass your API key')
+    parser.add_argument('-i', '--init', action='store_true', dest='init', help='First step. Pass your API key')
 
     parser.add_argument('-u', '--update_base', action='store_true', dest='update_base', help='Update your base of data')
 
@@ -95,6 +102,8 @@ def main():
     parser.add_argument('-top_s', '--top_sectors', type=int, dest='top_sectors', help="Get the global top X sectors." )
     parser.add_argument('-top_r', '--top_ransomwares', type=int, dest='top_ransomwares', help="Get the global top X ransomwares." )
 
+    parser.add_argument("-j", '--json', action='store_true', dest='json', help='To format your output to json')
+
     parser.add_argument("-n", '--news', action='store_true', dest='news', help='Cyber news!')
 
     parser.add_argument('-g', '--start_gui', action='store_true', dest='start_gui', help='Init a web service.')
@@ -103,6 +112,7 @@ def main():
     all_flags = []
     for action in parser._option_string_actions.values():
         all_flags.extend(action.option_strings)
+    all_flags = [x for x in all_flags if (x != "-j" and x!= '--json')]
     
     last_argument = None
     if last_argument is None and len(sys.argv) > 1:
@@ -116,7 +126,8 @@ def main():
         exit()
     else:
         if args.init:
-            save_key(args.init)
+            key = input('Enter your key:')
+            save_key(key)
             print(f"Key saved")
 
 
@@ -130,19 +141,16 @@ def main():
             data = get_df()
         all_data = data
 
-
         if args.update_base:
             update_df()       
         if args.after:
             start = args.after + "T00:00:00"
             data = df.filter_after(start,data)
-            if last_argument in ['-a', '--after']:
-                print(data)
+            output(data, last_argument in ['-a', '--after'], args.json)
         if args.before:
             end = args.before + "T23:59:59"
             data = df.filter_before(end,data)
-            if last_argument in ['-b', '--before']:
-                print(data)
+            output(data, last_argument in ['-b', '--before'], args.json)
         if args.countries:
             select_countries = args.countries
             if ',' in select_countries:
@@ -166,51 +174,39 @@ def main():
             elif select_countries == "middle_east":
                 select_countries = df.middle_east
             data = df.filter_country(select_countries, data)
-            if last_argument in ['-c', '--country']:
-                print(data)
+            output(data, last_argument in ['-c', '--country'], args.json)
         if args.sectors:
             select_sectors = args.sectors
             if ',' in select_sectors:
                 select_sectors = [item.lstrip() for item in args.sectors.split(',')]
             data = df.filter_sector(select_sectors, data)
-            if last_argument in ['-s', '--sectors']:
-                print(data)
+            output(data, last_argument in ['-s', '--sectors'], args.json)
         if args.ransomwares:
             select_ransomwares = args.ransomwares
             if ',' in select_ransomwares:
                 select_ransomwares = [item.lstrip() for item in args.ransomwares.split(',')]
             data = df.filter_ransomware(select_ransomwares, data)
-            if last_argument in ['-r', '--ransomwares']:
-                print(data)
+            output(data, last_argument in ['-r', '--ransomwares'], args.json)
         if args.list_countries:
-            if last_argument in ['-lc', '--list_countries']:
-                print(df.get_country_list(data))
+            output(df.get_country_list(data), last_argument in ['-lc', '--list_countries'], args.json)
         if args.list_sectors:
-            if last_argument in ['-ls', '--list_sectors']:
-                print(df.get_sector_list(data))
+            output(df.get_sector_list(data), last_argument in ['-ls', '--list_sectors'], args.json)
         if args.list_ransomwares:
-            if last_argument in ['-lr', '--list_ransomwares']:
-                print(df.get_ransomware_list(data))
+            output(df.get_ransomware_list(data), last_argument in ['-lr', '--list_ransomwares'], args.json)
         if args.victim:
-            if last_argument in ['-v', '--victim']:
-                print(df.filter_company(args.victim, data))
+            output(df.filter_company(args.victim, data), last_argument in ['-v', '--victim'], args.json)
         if args.top_countries:
-            if last_argument in ['-top_c', '--top_countries']:
-                print(df.get_top_x_countries(args.top_countries, data))
+            output(df.get_top_x_countries(args.top_countries, data), last_argument in ['-top_c', '--top_countries'], args.json)
         if args.top_sectors:
-            if last_argument in ['-top_s', '--top_sectors']:
-                print(df.get_top_x_sectors(args.top_sectors, data))
+            output(df.get_top_x_sectors(args.top_sectors, data), last_argument in ['-top_s', '--top_sectors'], args.json)
         if args.top_ransomwares:
-            if last_argument in ['-top_r', '--top_ransomwares']:
-                print(df.get_top_x_ransomwares(args.top_ransomwares, data))
+            output(df.get_top_x_ransomwares(args.top_ransomwares, data), last_argument in ['-top_r', '--top_ransomwares'], args.json)
         if args.news:
-            if last_argument in ["-n", '--news']:
-                print(df.get_cyber_news(data))
+            output(df.get_cyber_news(data), last_argument in ["-n", '--news'], args.json)
         if args.start_gui:
             print('In development . . .')
             exit()
             Web(all_data)
-        
 
 if __name__ == "__main__":
     main()

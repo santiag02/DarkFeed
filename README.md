@@ -9,9 +9,15 @@ The idea is create functions to return data available in the interface and bring
 - Filters in a time range
 - . . . 
 
+## How install it
+
+```bash
+pip install darkfeed
+```
+
 If you don't know how run it you can use the argument `-h`, like this:
 
-```python
+```bash
 darkfeed -h
 usage: darkfeed [-h] [-i INIT] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES]
                [-n] [-g]

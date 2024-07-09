@@ -7,7 +7,7 @@ def readme():
 
 setup(
     name="darkfeed",
-    version="0.2",
+    version="0.3",
     author="Camila Santiago",
     packages=["darkfeed", "darkfeed.lib"],
     description="A CLI parser for data from Dark Feed",

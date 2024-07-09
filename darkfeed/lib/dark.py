@@ -159,23 +159,23 @@ class DarkFeed:
         x_items = {k: sorted_count[k] for k in list(sorted_count.keys())[:num]}
         return x_items
     
-    def get_country_list(self) -> list:
+    def get_country_list(self, data:list) -> list:
         """
         Get a list of countries that have at least one victim of ransomware
         """
-        return self.count_countries().keys()
+        return self.count_countries(data).keys()
 
-    def get_sector_list(self) -> list:
+    def get_sector_list(self, data:list) -> list:
         """
         List all sectos identified by the victims of ransomware
         """
-        return self.count_sector().keys()
+        return self.count_sector(data).keys()
 
-    def get_ransomware_list(self) -> list:
+    def get_ransomware_list(self, data) -> list:
         """
         List all ransomwares in the base
         """
-        return self.count_group_name().keys()
+        return self.count_group_name(data).keys()
     
     def get_cyber_news(self, data) -> list:
         """

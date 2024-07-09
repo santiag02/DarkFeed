@@ -184,13 +184,13 @@ def main():
                 print(data)
         if args.list_countries:
             if last_argument in ['-lc', '--list_countries']:
-                print(df.get_country_list())
+                print(df.get_country_list(data))
         if args.list_sectors:
             if last_argument in ['-ls', '--list_sectors']:
-                print(df.get_sector_list())
+                print(df.get_sector_list(data))
         if args.list_ransomwares:
             if last_argument in ['-lr', '--list_ransomwares']:
-                print(df.get_ransomware_list())
+                print(df.get_ransomware_list(data))
         if args.victim:
             if last_argument in ['-v', '--victim']:
                 print(df.filter_company(args.victim, data))

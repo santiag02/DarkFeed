@@ -3,9 +3,10 @@
 This is a simples parser for all great data available with the API key of [Dark Feed](https://darkfeed.io/).
 
 The idea is create functions to return data available in the interface and bring more insights, like:
-- Top 10 countries
-- Top 5 sectors
-- Top 3 ransomwares
+- Top 10 countries this year
+- Top 5 sectors in Brazil
+- Top 3 ransomwares in latam
+- Count of victims in America of the North in the last month
 - Filters in a time range
 - . . . 
 
@@ -19,15 +20,15 @@ If you don't know how run it you can use the argument `-h`, like this:
 
 ```bash
 darkfeed -h
-usage: darkfeed [-h] [-i INIT] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES]
-               [-n] [-g]
+usage: darkfeed [-h] [-i] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES] [-json]
+                [-count] [-xlsx] [-n] [-g]
 
 Ransomware statistics - Kudos DarkFeed (darkfeed.io).
 
 options:
   -h, --help            show this help message and exit
-  -i INIT, --init INIT  First step. Pass your API key
-  -u, --update_base     Update your base of data
+  -i, --init            First step. Pass your API key
+  -u, --update_base     To save/update base to a file
   -a AFTER, --after AFTER
                         Date started to collecting published victims. Format: YYYY-MM-DD
   -b BEFORE, --before BEFORE
@@ -52,6 +53,9 @@ options:
                         Get the global top X sectors.
   -top_r TOP_RANSOMWARES, --top_ransomwares TOP_RANSOMWARES
                         Get the global top X ransomwares.
+  -json                 To format your output to json
+  -count                To count the num of items
+  -xlsx                 To convert data to spreadsheet / xlsx
   -n, --news            Cyber news!
   -g, --start_gui       Init a web service.
 ```

@@ -82,7 +82,7 @@ def main():
     
     parser.add_argument('-i', '--init', action='store_true', dest='init', help='First step. Pass your API key')
 
-    parser.add_argument('-u', '--update_base', action='store_true', dest='update_base', help='Update your base of data')
+    parser.add_argument('-u', '--update_base', action='store_true', dest='update_base', help='To save/update base to a file')
 
     parser.add_argument('-a', '--after', type=str, dest='after', help="Date started to collecting published victims. Format: YYYY-MM-DD")
     parser.add_argument('-b', '--before', type=str, dest='before', help="Date finished to collecting published victims. Format: YYYY-MM-DD")
@@ -102,7 +102,11 @@ def main():
     parser.add_argument('-top_s', '--top_sectors', type=int, dest='top_sectors', help="Get the global top X sectors." )
     parser.add_argument('-top_r', '--top_ransomwares', type=int, dest='top_ransomwares', help="Get the global top X ransomwares." )
 
-    parser.add_argument("-j", '--json', action='store_true', dest='json', help='To format your output to json')
+    parser.add_argument('-json', action='store_true', dest='json', help='To format your output to json')
+
+    parser.add_argument("-count", action='store_true', dest='counter', help='To count the num of items')
+
+    parser.add_argument("-xlsx", action='store_true', dest='xlsx', help='To convert data to spreadsheet / xlsx')
 
     parser.add_argument("-n", '--news', action='store_true', dest='news', help='Cyber news!')
 
@@ -112,7 +116,7 @@ def main():
     all_flags = []
     for action in parser._option_string_actions.values():
         all_flags.extend(action.option_strings)
-    all_flags = [x for x in all_flags if (x != "-j" and x!= '--json')]
+    all_flags = [x for x in all_flags if (x!= '--json')]
     
     last_argument = None
     if last_argument is None and len(sys.argv) > 1:
@@ -130,15 +134,7 @@ def main():
             save_key(key)
             print(f"Key saved")
 
-
-        current_folder = os.getcwd()
-        file_path = os.path.join(current_folder, "data")
-        data = []
-        if os.path.exists(file_path):
-            with open('data', 'r') as file:
-                data = json.load(file)
-        else:
-            data = get_df()
+        data = get_df()
         all_data = data
 
         if args.update_base:
@@ -188,21 +184,34 @@ def main():
             data = df.filter_ransomware(select_ransomwares, data)
             output(data, last_argument in ['-r', '--ransomwares'], args.json)
         if args.list_countries:
-            output(df.get_country_list(data), last_argument in ['-lc', '--list_countries'], args.json)
+            data = df.get_country_list(data)
+            output(data, last_argument in ['-lc', '--list_countries'], args.json)
         if args.list_sectors:
-            output(df.get_sector_list(data), last_argument in ['-ls', '--list_sectors'], args.json)
+            data = df.get_sector_list(data)
+            output(data, last_argument in ['-ls', '--list_sectors'], args.json)
         if args.list_ransomwares:
-            output(df.get_ransomware_list(data), last_argument in ['-lr', '--list_ransomwares'], args.json)
+            data = df.get_ransomware_list(data)
+            output(data, last_argument in ['-lr', '--list_ransomwares'], args.json)
         if args.victim:
-            output(df.filter_company(args.victim, data), last_argument in ['-v', '--victim'], args.json)
+            data = df.filter_company(args.victim, data)
+            output(data, last_argument in ['-v', '--victim'], args.json)
         if args.top_countries:
-            output(df.get_top_x_countries(args.top_countries, data), last_argument in ['-top_c', '--top_countries'], args.json)
+            data = df.get_top_x_countries(args.top_countries, data)
+            output(data, last_argument in ['-top_c', '--top_countries'], args.json)
         if args.top_sectors:
-            output(df.get_top_x_sectors(args.top_sectors, data), last_argument in ['-top_s', '--top_sectors'], args.json)
+            data = df.get_top_x_sectors(args.top_sectors, data)
+            output(data, last_argument in ['-top_s', '--top_sectors'], args.json)
         if args.top_ransomwares:
-            output(df.get_top_x_ransomwares(args.top_ransomwares, data), last_argument in ['-top_r', '--top_ransomwares'], args.json)
+            data = df.get_top_x_ransomwares(args.top_ransomwares, data)
+            output(data, last_argument in ['-top_r', '--top_ransomwares'], args.json)
         if args.news:
-            output(df.get_cyber_news(data), last_argument in ["-n", '--news'], args.json)
+            data = df.get_cyber_news(data)
+            output(data, last_argument in ["-n", '--news'], args.json)
+        if args.counter:
+            data = len(data)
+            output(data, last_argument in ["-count"])
+        if args.xlsx: 
+            df.data_2_csv(data)
         if args.start_gui:
             print('In development . . .')
             exit()

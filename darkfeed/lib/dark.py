@@ -1,5 +1,7 @@
 from datetime import datetime as dt
 from collections import defaultdict
+import openpyxl
+from openpyxl.styles import Font
 
 class DarkFeed:
     def __init__(self) -> None:
@@ -211,11 +213,58 @@ class DarkFeed:
         
         new_dict = {}
         for key in count:
-            # Assuming key is in format '%Y-%m', extract month part
+            # Assuming key is in format '%Y-%m', extract month part \o/
             month = key.split('-')[1]
             new_key = f"{month}"
             new_dict[new_key] = count[key]
         return new_dict
+    
+    def data_2_csv(self, data):
+        filename = 'darkfeed.xlsx'
+        
+        if data:
+            wb = openpyxl.Workbook()
+            sheet = wb.active
+            sheet.title = "DarkFeed"
+
+            if isinstance(data, list):
+                if isinstance(data[0], str):
+                    sheet['A1'] = "data"
+                    sheet.font = Font(bold=True)
+                    for index, item in enumerate(data, start=2):
+                        sheet.cell(row=index, column=1).value = item
+                elif isinstance(data[0], dict):
+                    headers = list(data[0].keys())
+                    for col_idx, header in enumerate(headers, start=1):
+                        sheet.cell(row=1, column=col_idx).value = header
+                        sheet.cell(row=1, column=col_idx).font = Font(bold=True)
+
+                    for row_idx, data_dict in enumerate(data, start=2):
+                        for col_idx, header in enumerate(headers, start=1):
+                            item = data_dict.get(header, "")
+                            if isinstance(item,list):
+                                item = str(item)
+                            sheet.cell(row=row_idx, column=col_idx).value = item
+                             
+            elif isinstance(data,dict):
+                sheet['A1'] = "data"
+                sheet['B1'] = "value"
+                row_idx = 2
+                for key, value in data.items():
+                    sheet.cell(row=row_idx, column=1).value = key
+                    sheet.cell(row=row_idx, column=2).value = value
+                    row_idx += 1
+
+            else:
+                print("This isn't the kind of data to be exported to spreadsheet")
+            
+            sheet.freeze_panes = 'A2' # Freeze the rows above A2
+            wb.save(filename)
+
+        else:
+            print("There isn't data")
+        
+        print(f"File '{filename}' created successfully.")
 
     def download_image(link:str):
         pass

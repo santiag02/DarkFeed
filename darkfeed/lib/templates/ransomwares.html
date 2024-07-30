@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="{{ url_for('static', filename='webfonts/xlsx.full.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='webfonts/dataTables.js') }}"></script>
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/table_style.css')}}">
+  <script src="{{ url_for('static', filename='js/table.js')}}"></script>
+  
+  <body>
+    
+    <div class="topnav" id="myTopnav">
+      <a href="{{ url_for('home') }}"><i class="fa fa-fw fa-home"></i> Home</a>
+      <a class="dropbtn" href="{{ url_for('dashboard') }}">Dashboard <i class="fa fa-caret-down"></i></a>
+      <a href="{{ url_for('ransomwares') }}">Ransomwares</a>
+      <a href="{{ url_for('cti_news') }}">CTI News</a>
+    </div>
+    
+    <button id="exportButton">Export to XLSX</button>
+
+    <div class="content">
+      <section class="table__body">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>
+                <input type="text" class="search_column" placeholder="Collection Date">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Company">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Ransomware group">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Sector">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Domain">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Country">
+              </th>
+              <th>
+                <input type="text" class="search_column" placeholder="Tags">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in content.db_ransomwares %}
+            <tr>
+              <td>{{ item.Date }}</td>
+              <td>{{ item.Company }}</td>
+              <td>{{ item['Group Name'] }}</td>
+              <td>{{ item.Sector }}</td>
+              <td>{{ item.Domain }}</td>
+              <td>{{ item.Country }}</td>
+              <td>{{ item.Tags }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </body>
+</html>

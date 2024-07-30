@@ -16,25 +16,27 @@ The idea is create functions to return data available in the interface and bring
 pip install darkfeed
 ```
 
+## How use the command line 
+
 If you don't know how run it you can use the argument `-h`, like this:
 
 ```bash
 darkfeed -h
-usage: darkfeed [-h] [-i] [-u] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS] [-top_r TOP_RANSOMWARES] [-json]
-                [-count] [-xlsx] [-n] [-g]
+usage: darkfeed [-h] [-i] [-d] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS]
+                [-top_r TOP_RANSOMWARES] [-json] [-count] [-xlsx] [-n] [-g]
 
 Ransomware statistics - Kudos DarkFeed (darkfeed.io).
 
 options:
   -h, --help            show this help message and exit
-  -i, --init            First step. Pass your API key
-  -u, --update_base     To save/update base to a file
+  -i, --init            First step. Pass your API key.
+  -d, --download_base   To save/update base to a file
   -a AFTER, --after AFTER
                         Date started to collecting published victims. Format: YYYY-MM-DD
   -b BEFORE, --before BEFORE
                         Date finished to collecting published victims. Format: YYYY-MM-DD
   -c COUNTRIES, --country COUNTRIES
-                        Country filer, write how many countries do you want split by [,]. You could also use: latam, south_america, central_america, middle_east, north_america, europe, asia, africa or
+                        Country filer, write how many countries do you want split by [,]. You could also use: latam, south_america, central_america, north_america, europe, asia, africa or
                         oceania
   -lc, --list_countries
                         List all possible strings for countries
@@ -59,3 +61,10 @@ options:
   -n, --news            Cyber news!
   -g, --start_gui       Init a web service.
 ```
+
+# How to use the GUI
+
+```bash
+darkfeed -g
+```
+

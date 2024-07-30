@@ -1,0 +1,9 @@
+.ini
+darkfeed/__init__.py
+commands
+dist/
+build/
+darkfeed.xlsx
+darkfeed.data
+darkfeed.egg-info/
+darkfeed/lib/__pycache__/

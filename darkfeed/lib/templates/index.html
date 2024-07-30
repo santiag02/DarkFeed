@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'webfonts/font-awesome.min.css')}}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index_style.css')}}">
+    <script src="{{ url_for('static', filename='js/table.js')}}"></script>
+
+ 
+  <body>
+  
+    <div class="topnav" id="myTopnav">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a class="dropbtn" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('ransomwares') }}">Ransomwares</a>
+      <a href="{{ url_for('cti_news') }}">CTI News</a>
+    </div>
+
+    <div class="row">
+      {% for item in content.description_dash_data %}
+      <div class="column">
+        <div class="card">
+          {{item}}
+          <h3>{{ content.dashboard_items[loop.index - 1] }}</h3>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2>Last CTI News</h2>
+
+    <div class="row">
+      {% for item in content.last_3_cti_news %}
+      <div class="column">
+        <div class="card">
+          <h3>{{item.Name}}</h3>
+          <div class="card-body">
+            <p>Date: {{item.Date}}</p>
+            <p><a href="{{ item.Link }}">Link</a></p>
+            <p>Tags: {{item.Tags}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <h2>Last Victims</h2>
+
+    <div class="row">
+      {% for item in content.last_3_victims %}
+      <div class="column">
+        <div class="card">
+          <h3>{{item.Company}}</h3>
+          <div class="card-body">
+            <p>Date: {{item.Date}}</p>
+            <p>Ransomware: {{item['Group Name']}}</p>
+            <p>Sector: {{item.Sector}}</p>
+            <p>Country: {{item.Country}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2>Ransomwares x Num Victims</h2>
+
+    <div class="content">
+      <section class="table__body">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>
+                <input type="text" class="search_column" placeholder="Ransomware">
+              </th>
+              <th>Num Victims</th>
+            </tr>
+        </thead>
+          {% for ransomware, value in content.ransomware_groups.items() %}
+          <tr>
+            <td>{{ ransomware }}</td>
+            <td>{{ value }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </section>
+    </div>
+    
+  
+  </body>
+</html>

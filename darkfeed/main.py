@@ -7,11 +7,9 @@ import sys
 import configparser
 import os
 
-from pprint import pprint
-
 KEY_PATH = os.path.join(os.path.expanduser("~"), '.darkfeed.ini')
 
-#from lib.web_service import Web
+from .lib.web_service import Web
 from .lib.dark import DarkFeed
 from pathlib import Path
 
@@ -38,7 +36,7 @@ def update_df():
     response = requests.get("https://api.darkfeed.io/APIFULL", headers=headers)
     if(response.status_code == 200):
         data = response.json()
-        with open("data", 'w') as f:
+        with open("darkfeed.data", 'w') as f:
             json.dump(data, f, indent=4)
         print(f"Last date: {data[0].get('Date')}")
     else:
@@ -80,14 +78,14 @@ def main():
     # Start with date arguments
     parser = argparse.ArgumentParser(description='Ransomware statistics - Kudos DarkFeed (darkfeed.io).')
     
-    parser.add_argument('-i', '--init', action='store_true', dest='init', help='First step. Pass your API key')
+    parser.add_argument('-i', '--init', action='store_true', dest='init', help="First step. Pass your API key.")
 
-    parser.add_argument('-u', '--update_base', action='store_true', dest='update_base', help='To save/update base to a file')
+    parser.add_argument('-d', '--download_base', action='store_true', dest='download_base', help='To save/update base to a file')
 
     parser.add_argument('-a', '--after', type=str, dest='after', help="Date started to collecting published victims. Format: YYYY-MM-DD")
     parser.add_argument('-b', '--before', type=str, dest='before', help="Date finished to collecting published victims. Format: YYYY-MM-DD")
 
-    parser.add_argument('-c', '--country', type= str, dest='countries', help='Country filer, write how many countries do you want split by [,].\nYou could also use: latam, south_america, central_america, middle_east, north_america, europe, asia, africa or oceania')
+    parser.add_argument('-c', '--country', type= str, dest='countries', help='Country filer, write how many countries do you want split by [,].\nYou could also use: latam, south_america, central_america, north_america, europe, asia, africa or oceania')
     parser.add_argument('-lc', '--list_countries', action='store_true', dest='list_countries', help='List all possible strings for countries')
 
     parser.add_argument('-s', '--sectors', type= str, dest='sectors', help='Sector filter, choose the sectors of your interest. You can choose more than one split then with [,]')
@@ -137,7 +135,7 @@ def main():
         data = get_df()
         all_data = data
 
-        if args.update_base:
+        if args.download_base:
             update_df()       
         if args.after:
             start = args.after + "T00:00:00"
@@ -213,8 +211,6 @@ def main():
         if args.xlsx: 
             df.data_2_csv(data)
         if args.start_gui:
-            print('In development . . .')
-            exit()
             Web(all_data)
 
 if __name__ == "__main__":

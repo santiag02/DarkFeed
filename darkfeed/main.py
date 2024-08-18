@@ -107,6 +107,8 @@ def main():
     parser.add_argument("-xlsx", action='store_true', dest='xlsx', help='To convert data to spreadsheet / xlsx')
 
     parser.add_argument("-n", '--news', action='store_true', dest='news', help='Cyber news!')
+    
+    parser.add_argument("-nr", '--new_ransomwares', action='store_true', dest='new_ransomwares', help='Return ransomware families based in first detection in DarkFeed database. You can use arguments of date to filter the returned ransomwares. The default is last month. Reliability is from 2024')
 
     parser.add_argument('-g', '--start_gui', action='store_true', dest='start_gui', help='Init a web service.')
     args = parser.parse_args()
@@ -205,6 +207,15 @@ def main():
         if args.news:
             data = df.get_cyber_news(data)
             output(data, last_argument in ["-n", '--news'], args.json)
+        if args.new_ransomwares:
+            start = ''
+            end = ''
+            if args.after:
+                start = args.after + "T00:00:00"
+            if args.before:
+                end = args.before + "T23:59:59"
+            ransomwares = df.get_new_ransomwares(all_data, start, end)
+            output(ransomwares, last_argument in ["-nr", '--new_ransomwares'], args.json)
         if args.counter:
             data = len(data)
             output(data, last_argument in ["-count"])

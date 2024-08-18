@@ -23,7 +23,7 @@ class Web():
 
         df = DarkFeed()
 
-        db_ransomwares = df.get_ransomware_news(data)
+        db_ransomwares = df.get_ransomware_data(data)
         db_cti = df.get_cyber_news(data)
 
         ##########

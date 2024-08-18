@@ -1,4 +1,5 @@
 from datetime import datetime as dt
+from dateutil import relativedelta as rd
 from collections import defaultdict
 import openpyxl
 from openpyxl.styles import Font
@@ -188,7 +189,7 @@ class DarkFeed:
                 selected_items.append(item)
         return selected_items
     
-    def get_ransomware_news(self, data:list) -> list:
+    def get_ransomware_data(self, data:list) -> list:
         """
         List only events related to ransowmare compromise
         """
@@ -197,6 +198,46 @@ class DarkFeed:
             if(item.get('Category') == 'Ransomware'):
                 selected_items.append(item)
         return selected_items
+
+    def get_new_ransomwares(self, data:list, after:str='', before:str='') -> dict:
+        """
+        List only new ransomwares in range date
+        """
+
+        first_occurrences = {}
+        for item in data:
+            if(item.get('Category') == 'Ransomware'):
+                ransomware = item["Group Name"]
+                date = dt.strptime(item["Date"], "%Y-%m-%dT%H:%M:%S")
+
+            if ransomware not in first_occurrences:
+                first_occurrences[ransomware] = date
+            else:
+                if date < first_occurrences[ransomware]:
+                    first_occurrences[ransomware] = date
+        
+        today = dt.today()
+        last_month_first_day = (today - rd.relativedelta(day=1)) - rd.relativedelta(months=1)
+        last_month_last_day = (today - rd.relativedelta(day=1)) - rd.relativedelta(days=1)
+        
+        if not after:
+            start_date = last_month_first_day
+        else:
+            start_date = dt.strptime(after, "%Y-%m-%dT%H:%M:%S")
+        
+        if not before:
+            end_date = last_month_last_day
+        else:
+            end_date = dt.strptime(before, "%Y-%m-%dT%H:%M:%S")
+
+        ransomwares_in_range = {
+            ransom: dt.strftime(date, "%Y-%m-%dT%H:%M:%S") for ransom, date in first_occurrences.items()
+            if start_date <= date <= end_date
+        }
+    
+        return ransomwares_in_range
+
+        
     
     def count_data_per_month(self, data:list) -> dict:
         """

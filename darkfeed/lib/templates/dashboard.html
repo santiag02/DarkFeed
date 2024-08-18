@@ -748,47 +748,7 @@
 
         updateMapChart('map_locations_month', {{ content.dash_top10_europe_this_month_countries_labels | safe}});
 
-      } /* else if (region === "middle_east") {
-        resetFields();
-
-        total_victims_year_field.textContent = {{ content.dash_total_victims_middle_east_this_year | safe }}
-        total_victims_this_month_field.textContent = {{ content.dash_total_middle_east_victims_this_month | safe }}
-        total_victims_last_month_field.textContent =  {{ content.dash_total_middle_east_victims_last_month | safe }}
-        total_victims_month_growth_field.textContent = {{ content.dash_europe_victims_monthly_growth | safe }} + "%"
-
-        barChart_locations_victims_by_month.data.labels = {{ content.dash_victims_by_month_middle_east_year_labels | safe}};
-        barChart_locations_victims_by_month.data.datasets[0].data = {{ content.dash_victims_by_month_middle_east_year_values | safe}};
-        barChart_locations_victims_by_month.update();
-
-        barChart_locations_ransomware_year.data.labels = {{ content.dash_top10_middle_east_ransomwares_year_labels | safe}};
-        barChart_locations_ransomware_year.data.datasets[0].data = {{ content.dash_top10_middle_east_ransomwares_year_values | safe}};
-        barChart_locations_ransomware_year.update();
-
-        doughnutChart_locations_sectors_year.data.labels = {{ content.dash_top10_middle_east_sectors_year_labels | safe}};
-        doughnutChart_locations_sectors_year.data.datasets[0].data = {{ content.dash_top10_middle_east_sectors_year_values | safe}};
-        doughnutChart_locations_sectors_year.update();
-
-        hbarChart_locations_countries_year.data.labels = {{ content.dash_top10_middle_east_countries_year_labels | safe}};
-        hbarChart_locations_countries_year.data.datasets[0].data = {{ content.dash_top10_middle_east_countries_year_values | safe}};
-        hbarChart_locations_countries_year.update();
-
-        updateMapChart('map_locations_year', {{ content.dash_top10_middle_east_countries_year_labels | safe}});
-
-        barChart_locations_ransomware_month.data.labels = {{ content.dash_top10_middle_east_this_month_ransomwares_labels | safe}};
-        barChart_locations_ransomware_month.data.datasets[0].data = {{ content.dash_top10_middle_east_this_month_ransomwares_values | safe}};
-        barChart_locations_ransomware_month.update();
-
-        doughnutChart_locations_sectors_month.data.labels = {{ content.dash_top10_middle_east_this_month_sectors_labels | safe}};
-        doughnutChart_locations_sectors_month.data.datasets[0].data = {{ content.dash_top10_middle_east_this_month_sectors_values | safe}};
-        doughnutChart_locations_sectors_month.update();
-
-        hbarChart_locations_countries_month.data.labels = {{ content.dash_top10_middle_east_this_month_countries_labels | safe}};
-        hbarChart_locations_countries_month.data.datasets[0].data = {{ content.dash_top10_middle_east_this_month_countries_values | safe}};
-        hbarChart_locations_countries_month.update();
-
-        updateMapChart('map_locations_month', {{ content.dash_top10_middle_east_this_month_countries_labels | safe}});
-
-      } */ else if (region === "north_america") {
+      } else if (region === "north_america") {
         resetFields();
 
         total_victims_year_field.textContent = {{ content.dash_total_victims_north_america_this_year | safe }}
@@ -876,12 +836,45 @@
       const total_victims_sector_this_month = document.getElementById('total_victims_sector_this_month')
       const total_victims_sector_last_month = document.getElementById('total_victims_sector_last_month')
       const total_victims_sector_month_growth = document.getElementById('total_victims_sector_month_growth')
+
+      function resetSector() {
+        total_victims_sector_year.textContent = 0
+        total_victims_sector_this_month.textContent = 0
+        total_victims_sector_last_month.textContent =  0
+        total_victims_sector_month_growth.textContent = "0 %"
+
+        barChart_sectors_victims_by_month.data.labels = [];
+        barChart_sectors_victims_by_month.data.datasets[0].data = [];
+        barChart_sectors_victims_by_month.update();
+
+        hbarChart_sectors_ransomwares_year.data.labels = [];
+        hbarChart_sectors_ransomwares_year.data.datasets[0].data = [];
+        hbarChart_sectors_ransomwares_year.update();
+
+        hbarChart_sectors_countries_year.data.labels = [];
+        hbarChart_sectors_countries_year.data.datasets[0].data = [];
+        hbarChart_sectors_countries_year.update();
+
+        updateMapChart('map_sector_year', []);
+
+        hbarChart_sectors_ransomwares_last_month.data.labels = [];
+        hbarChart_sectors_ransomwares_last_month.data.datasets[0].data = [];
+        hbarChart_sectors_ransomwares_last_month.update();
+
+        hbarChart_sectors_countries_last_month.data.labels = [];
+        hbarChart_sectors_countries_last_month.data.datasets[0].data = [];
+        hbarChart_sectors_countries_last_month.update();
+
+        updateMapChart('map_sector_last_month', [])       
+      };
       
       if (sector === "manufacturing" ) {
-        total_victims_sector_year.textContent = {{ content.dash_total_victims_manufacturing_this_year | safe }}
-        total_victims_sector_this_month.textContent = {{ content.dash_total_manufacturing_victims_this_month | safe }}
-        total_victims_sector_last_month.textContent =  {{ content.dash_total_manufacturing_victims_last_month | safe }}
-        total_victims_sector_month_growth.textContent = {{ content.dash_manufacturing_victims_monthly_growth | safe }} + "%"
+        resetSector();
+
+        total_victims_sector_year.textContent = {{ content.dash_total_victims_manufacturing_this_year | safe }};
+        total_victims_sector_this_month.textContent = {{ content.dash_total_manufacturing_victims_this_month | safe }};
+        total_victims_sector_last_month.textContent =  {{ content.dash_total_manufacturing_victims_last_month | safe }};
+        total_victims_sector_month_growth.textContent = {{ content.dash_manufacturing_victims_monthly_growth | safe }} + "%";
 
         barChart_sectors_victims_by_month.data.labels = {{ content.dash_victims_by_month_manufacturing_year_labels | safe}};
         barChart_sectors_victims_by_month.data.datasets[0].data = {{ content.dash_victims_by_month_manufacturing_year_values | safe}};
@@ -897,11 +890,11 @@
 
         updateMapChart('map_sector_year', {{ content.dash_top10_manufacturing_countries_year_labels | safe}});
 
-        hbarChart_sectors_ransomwares_last_month = {{ content.dash_top10_manufacturing_last_month_ransomwares_labels | safe}};
+        hbarChart_sectors_ransomwares_last_month.data.labels = {{ content.dash_top10_manufacturing_last_month_ransomwares_labels | safe}};
         hbarChart_sectors_ransomwares_last_month.data.datasets[0].data = {{ content.dash_top10_manufacturing_last_month_ransomwares_values | safe}};
         hbarChart_sectors_ransomwares_last_month.update();
 
-        hbarChart_sectors_countries_last_month = {{ content.dash_top10_manufacturing_last_month_countries_labels | safe}};
+        hbarChart_sectors_countries_last_month.data.labels = {{ content.dash_top10_manufacturing_last_month_countries_labels | safe}};
         hbarChart_sectors_countries_last_month.data.datasets[0].data = {{ content.dash_top10_manufacturing_last_month_countries_values | safe}};
         hbarChart_sectors_countries_last_month.update();
 
@@ -909,10 +902,12 @@
 
 
       } else if ( sector === "finance") {
-        total_victims_sector_year.textContent = {{ content.dash_total_victims_finance_this_year | safe }}
-        total_victims_sector_this_month.textContent = {{ content.dash_total_finance_victims_this_month | safe }}
-        total_victims_sector_last_month.textContent =  {{ content.dash_total_finance_victims_last_month | safe }}
-        total_victims_sector_month_growth.textContent = {{ content.dash_finance_victims_monthly_growth | safe }} + "%"
+        resetSector();
+
+        total_victims_sector_year.textContent = {{ content.dash_total_victims_finance_this_year | safe }};
+        total_victims_sector_this_month.textContent = {{ content.dash_total_finance_victims_this_month | safe }};
+        total_victims_sector_last_month.textContent =  {{ content.dash_total_finance_victims_last_month | safe }};
+        total_victims_sector_month_growth.textContent = {{ content.dash_finance_victims_monthly_growth | safe }} + "%";
 
         barChart_sectors_victims_by_month.data.labels = {{ content.dash_victims_by_month_finance_year_labels | safe}};
         barChart_sectors_victims_by_month.data.datasets[0].data = {{ content.dash_victims_by_month_finance_year_values | safe}};
@@ -928,21 +923,23 @@
 
         updateMapChart('map_sector_year', {{ content.dash_top10_finance_countries_year_labels | safe}});
 
-        hbarChart_sectors_ransomwares_last_month = {{ content.dash_top10_finance_last_month_ransomwares_labels | safe}};
+        hbarChart_sectors_ransomwares_last_month.data.labels = {{ content.dash_top10_finance_last_month_ransomwares_labels | safe}};
         hbarChart_sectors_ransomwares_last_month.data.datasets[0].data = {{ content.dash_top10_finance_last_month_ransomwares_values | safe}};
         hbarChart_sectors_ransomwares_last_month.update();
 
-        hbarChart_sectors_countries_last_month = {{ content.dash_top10_finance_last_month_countries_labels | safe}};
-        hbarChart_sectors_countries_last_month.data.datasets[0].data = {{ content.dash_top10_finance_last_month_countries_labels | safe}};
+        hbarChart_sectors_countries_last_month.data.labels = {{ content.dash_top10_finance_last_month_countries_labels | safe}};
+        hbarChart_sectors_countries_last_month.data.datasets[0].data = {{ content.dash_top10_finance_last_month_countries_values | safe}};
         hbarChart_sectors_countries_last_month.update();
 
         updateMapChart('map_sector_last_month', {{ content.dash_top10_finance_last_month_countries_labels | safe}});
 
       } else if ( sector === "energy" ) {
-        total_victims_sector_year.textContent = {{ content.dash_total_victims_energy_this_year | safe }}
-        total_victims_sector_this_month.textContent = {{ content.dash_total_energy_victims_this_month | safe }}
-        total_victims_sector_last_month.textContent =  {{ content.dash_total_energy_victims_last_month | safe }}
-        total_victims_sector_month_growth.textContent = {{ content.dash_energy_victims_monthly_growth | safe }} + "%"
+        resetSector();
+
+        total_victims_sector_year.textContent = {{ content.dash_total_victims_energy_this_year | safe }};
+        total_victims_sector_this_month.textContent = {{ content.dash_total_energy_victims_this_month | safe }};
+        total_victims_sector_last_month.textContent =  {{ content.dash_total_energy_victims_last_month | safe }};
+        total_victims_sector_month_growth.textContent = {{ content.dash_energy_victims_monthly_growth | safe }} + "%";
 
         barChart_sectors_victims_by_month.data.labels = {{ content.dash_victims_by_month_energy_year_labels | safe}};
         barChart_sectors_victims_by_month.data.datasets[0].data = {{ content.dash_victims_by_month_energy_year_values | safe}};
@@ -958,21 +955,23 @@
 
         updateMapChart('map_sector_year', {{ content.dash_top10_energy_countries_year_labels | safe}});
 
-        hbarChart_sectors_ransomwares_last_month = {{ content.dash_top10_energy_last_month_ransomwares_labels | safe}};
+        hbarChart_sectors_ransomwares_last_month.data.labels = {{ content.dash_top10_energy_last_month_ransomwares_labels | safe}};
         hbarChart_sectors_ransomwares_last_month.data.datasets[0].data = {{ content.dash_top10_energy_last_month_ransomwares_values | safe}};
         hbarChart_sectors_ransomwares_last_month.update();
 
-        hbarChart_sectors_countries_last_month = {{ content.dash_top10_energy_last_month_countries_labels | safe}};
+        hbarChart_sectors_countries_last_month.data.labels = {{ content.dash_top10_energy_last_month_countries_labels | safe}};
         hbarChart_sectors_countries_last_month.data.datasets[0].data = {{ content.dash_top10_energy_last_month_countries_values | safe}};
         hbarChart_sectors_countries_last_month.update();
 
         updateMapChart('map_sector_last_month', {{ content.dash_top10_energy_last_month_countries_labels | safe}});
 
       } else if ( sector === "health" ) {
-        total_victims_sector_year.textContent = {{ content.dash_total_victims_health_this_year | safe }}
-        total_victims_sector_this_month.textContent = {{ content.dash_total_health_victims_this_month | safe }}
-        total_victims_sector_last_month.textContent =  {{ content.dash_total_health_victims_last_month | safe }}
-        total_victims_sector_month_growth.textContent = {{ content.dash_health_victims_monthly_growth | safe }} + "%"
+        resetSector();
+
+        total_victims_sector_year.textContent = {{ content.dash_total_victims_health_this_year | safe }};
+        total_victims_sector_this_month.textContent = {{ content.dash_total_health_victims_this_month | safe }};
+        total_victims_sector_last_month.textContent =  {{ content.dash_total_health_victims_last_month | safe }};
+        total_victims_sector_month_growth.textContent = {{ content.dash_health_victims_monthly_growth | safe }} + "%";
 
         barChart_sectors_victims_by_month.data.labels = {{ content.dash_victims_by_month_health_year_labels | safe}};
         barChart_sectors_victims_by_month.data.datasets[0].data = {{ content.dash_victims_by_month_health_year_values | safe}};
@@ -988,11 +987,11 @@
 
         updateMapChart('map_sector_year', {{ content.dash_top10_health_countries_year_labels | safe}});
 
-        hbarChart_sectors_ransomwares_last_month = {{ content.dash_top10_health_last_month_ransomwares_labels | safe}};
+        hbarChart_sectors_ransomwares_last_month.data.labels = {{ content.dash_top10_health_last_month_ransomwares_labels | safe}};
         hbarChart_sectors_ransomwares_last_month.data.datasets[0].data = {{ content.dash_top10_health_last_month_ransomwares_values | safe}};
         hbarChart_sectors_ransomwares_last_month.update();
 
-        hbarChart_sectors_countries_last_month = {{ content.dash_top10_health_last_month_countries_labels | safe}};
+        hbarChart_sectors_countries_last_month.data.labels = {{ content.dash_top10_health_last_month_countries_labels | safe}};
         hbarChart_sectors_countries_last_month.data.datasets[0].data = {{ content.dash_top10_health_last_month_countries_values | safe}};
         hbarChart_sectors_countries_last_month.update();
 

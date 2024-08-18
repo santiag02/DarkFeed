@@ -62,6 +62,10 @@ options:
   -g, --start_gui       Init a web service.
 ```
 
+You can mix commands to receive different outputs, like xlsx or json. The last argument will define the output.
+
+![](docs/docfx/images/MixtureOpen.gif)
+
 # How to use the GUI
 
 ```bash

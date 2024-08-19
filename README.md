@@ -23,7 +23,7 @@ If you don't know how run it you can use the argument `-h`, like this:
 ```bash
 darkfeed -h
 usage: darkfeed [-h] [-i] [-d] [-a AFTER] [-b BEFORE] [-c COUNTRIES] [-lc] [-s SECTORS] [-ls] [-r RANSOMWARES] [-lr] [-v VICTIM] [-top_c TOP_COUNTRIES] [-top_s TOP_SECTORS]
-                [-top_r TOP_RANSOMWARES] [-json] [-count] [-xlsx] [-n] [-g]
+                [-top_r TOP_RANSOMWARES] [-json] [-count] [-xlsx] [-n] [-nr] [-g]
 
 Ransomware statistics - Kudos DarkFeed (darkfeed.io).
 
@@ -59,12 +59,17 @@ options:
   -count                To count the num of items
   -xlsx                 To convert data to spreadsheet / xlsx
   -n, --news            Cyber news!
+  -nr, --new_ransomwares
+                        Return ransomware families based in first detection in DarkFeed database. You can use arguments of date to filter the returned ransomwares. The default is last
+                        month. Reliability is from 2024
   -g, --start_gui       Init a web service.
 ```
 
 You can mix commands to receive different outputs, like xlsx or json. The last argument will define the output.
 
-![](docs/docfx/images/MixtureOpen.gif)
+|![CLI](https://github.com/santiag02/DarkFeed/blob/main/media/DarkFeed_CLI.gif "CLI")|
+|:---:|
+|CLI|
 
 # How to use the GUI
 
@@ -72,3 +77,6 @@ You can mix commands to receive different outputs, like xlsx or json. The last a
 darkfeed -g
 ```
 
+|![GUI](https://github.com/santiag02/DarkFeed/blob/main/media/DarkFeed_GUI.gif "GUI")|
+|:-----:|
+|GUI|

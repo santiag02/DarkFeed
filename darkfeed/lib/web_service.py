@@ -10,8 +10,8 @@ from .keywords import keywords
 from .dark import DarkFeed
 
 app = Flask(__name__)
-app.logger.setLevel(logging.ERROR)
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
+log = logging.getLogger('werkzeug')
+log.disabled = True
 
 class Web():
     def __init__(self, data:list) -> None:
@@ -644,6 +644,86 @@ class Web():
         keywords['dash_top10_health_last_month_ransomwares_values'] = list(top10_health_last_month_ransomwares.values())
 
 
+        # Health - Year
+        victims_health_year = df.filter_sector(df.sector_health, victims_current_year)
+
+        total_health_victims_this_year = len(victims_health_year)
+        top10_health_countries_year = df.get_top_x_countries(10, victims_health_year)
+        top10_health_ransomwares_year = df.get_top_x_ransomwares(10, victims_health_year)
+
+        keywords['dash_total_victims_health_this_year'] = total_health_victims_this_year
+        keywords['dash_top10_health_countries_year_labels'] = list(top10_health_countries_year.keys())
+        keywords['dash_top10_health_countries_year_values'] = list(top10_health_countries_year.values())
+        keywords['dash_top10_health_ransomwares_year_labels'] = list(top10_health_ransomwares_year.keys())
+        keywords['dash_top10_health_ransomwares_year_values'] = list(top10_health_ransomwares_year.values())
+
+        # Health - Victims By Month
+        victims_by_health_year = df.count_data_per_month(victims_health_year)
+
+        keywords['dash_victims_by_month_health_year_labels'] = list(victims_by_health_year.keys())[::-1]
+        keywords['dash_victims_by_month_health_year_values'] = list(victims_by_health_year.values())[::-1]
+
+
+        # IT - Year
+        victims_it_year = df.filter_sector(df.sector_it, victims_current_year)
+
+        total_it_victims_this_year = len(victims_it_year)
+        top10_it_countries_year = df.get_top_x_countries(10, victims_it_year)
+        top10_it_ransomwares_year = df.get_top_x_ransomwares(10, victims_it_year)
+
+        keywords['dash_total_victims_it_this_year'] = total_it_victims_this_year
+        keywords['dash_top10_it_countries_year_labels'] = list(top10_it_countries_year.keys())
+        keywords['dash_top10_it_countries_year_values'] = list(top10_it_countries_year.values())
+        keywords['dash_top10_it_ransomwares_year_labels'] = list(top10_it_ransomwares_year.keys())
+        keywords['dash_top10_it_ransomwares_year_values'] = list(top10_it_ransomwares_year.values())
+
+        # IT - Victims By Month
+        victims_by_it_year = df.count_data_per_month(victims_it_year)
+
+        keywords['dash_victims_by_month_it_year_labels'] = list(victims_by_it_year.keys())[::-1]
+        keywords['dash_victims_by_month_it_year_values'] = list(victims_by_it_year.values())[::-1]
+
+
+        # IT - Last Month
+        victims_it_this_month = df.filter_sector(df.sector_it, victims_this_month)
+        victims_it_last_month = df.filter_sector(df.sector_it, victims_last_month)
+
+        total_it_victims_last_month = len(victims_it_last_month)
+        total_it_victims_this_month = len(victims_it_this_month)
+        top10_it_last_month_countries = df.get_top_x_countries(10, victims_it_last_month)
+        top10_it_last_month_ransomwares = df.get_top_x_ransomwares(10, victims_it_last_month)
+
+        it_victims_monthly_growth = self.calculate_growth_percentage(total_it_victims_this_month, total_it_victims_last_month)
+
+        keywords['dash_total_it_victims_this_month'] = total_it_victims_this_month
+        keywords['dash_total_it_victims_last_month'] = total_it_victims_last_month
+        keywords['dash_it_victims_monthly_growth'] = it_victims_monthly_growth
+        keywords['dash_top10_it_last_month_countries_labels'] = list(top10_it_last_month_countries.keys())
+        keywords['dash_top10_it_last_month_countries_values'] = list(top10_it_last_month_countries.values())
+        keywords['dash_top10_it_last_month_ransomwares_labels'] = list(top10_it_last_month_ransomwares.keys())
+        keywords['dash_top10_it_last_month_ransomwares_values'] = list(top10_it_last_month_ransomwares.values())
+
+
+        # IT - Year
+        victims_it_year = df.filter_sector(df.sector_it, victims_current_year)
+
+        total_it_victims_this_year = len(victims_it_year)
+        top10_it_countries_year = df.get_top_x_countries(10, victims_it_year)
+        top10_it_ransomwares_year = df.get_top_x_ransomwares(10, victims_it_year)
+
+        keywords['dash_total_victims_it_this_year'] = total_it_victims_this_year
+        keywords['dash_top10_it_countries_year_labels'] = list(top10_it_countries_year.keys())
+        keywords['dash_top10_it_countries_year_values'] = list(top10_it_countries_year.values())
+        keywords['dash_top10_it_ransomwares_year_labels'] = list(top10_it_ransomwares_year.keys())
+        keywords['dash_top10_it_ransomwares_year_values'] = list(top10_it_ransomwares_year.values())
+
+        # IT - Victims By Month
+        victims_by_it_year = df.count_data_per_month(victims_it_year)
+
+        keywords['dash_victims_by_month_it_year_labels'] = list(victims_by_it_year.keys())[::-1]
+        keywords['dash_victims_by_month_it_year_values'] = list(victims_by_it_year.values())[::-1]
+
+
         #################
         ## RANSOMWARES ##
         #################
@@ -681,7 +761,7 @@ class Web():
     
     def calculate_growth_percentage(self, new_value:int, old_value:int) -> float:
         try:
-            percentage = ((new_value - old_value) / abs(old_value)) * 100
+            percentage = ((100 * new_value) / old_value) - 100
             return "{:.2f}".format(percentage)
         except ZeroDivisionError:
             if old_value == 0 and new_value == 0:

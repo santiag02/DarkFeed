@@ -20,6 +20,7 @@ class DarkFeed:
         self.sector_finance = ['Financial', 'Banking', 'Insurance']
         self.sector_energy = ['Energy']
         self.sector_health = ['HealthCare']
+        self.sector_it = ['Technology', 'Gaming', 'ITAndCyber']
 
     def count_countries(self, data:list) -> dict:
         """

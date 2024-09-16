@@ -216,6 +216,7 @@ def main():
                 end = args.before + "T23:59:59"
             ransomwares = df.get_new_ransomwares(all_data, start, end)
             output(ransomwares, last_argument in ["-nr", '--new_ransomwares'], args.json)
+            data = ransomwares
         if args.counter:
             data = len(data)
             output(data, last_argument in ["-count"])
